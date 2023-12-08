@@ -5,8 +5,6 @@ print("MODELS.PY")
 
 db = SQLAlchemy()
 
-DEFAULT_IMAGE_URL = "https://tinyurl.com/mry92yn3"
-
 
 def connect_db(app):
     """Connect to the database."""
@@ -63,3 +61,6 @@ class Pet(db.Model):
         db.Boolean,
         nullable=False,
         default=True)
+    
+
+print("MODELS-END.PY")

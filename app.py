@@ -18,17 +18,17 @@ app.config['SECRET_KEY'] = 'i-have-a-secret'
 #
 # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
+connect_db(app)
 toolbar = DebugToolbarExtension(app)
 
-
-connect_db(app)
-
+print("app.config.url: ", app.config['SQLALCHEMY_DATABASE_URI'])
 
 @app.get('/')
-def root():
-    """TODO: Homepage redirects to list of users."""
+def show_pets():
+    """Homepage displays all pets."""
 
-    pets = Pet.query.order_by(Pet.name).all()
+    pets = Pet.query.all()
+    print("pets: ", pets)
 
     return render_template('homepage.html', pets=pets)
 
