@@ -25,3 +25,27 @@ connect_db(app)
 @app.get('/')
 def root():
     """TODO: Homepage redirects to list of users."""
+
+    pets = Pet.query.order_by(Pet.name).all()
+
+    return render_template('homepage.html', pets=pets)
+
+
+
+# @app.route("/add", methods=["GET", "POST"])
+# def add_snack():
+#     """Snack add form; handle adding."""
+
+#     form = AddSnackForm()
+
+#     if form.validate_on_submit():
+#         name = form.name.data
+#         price = form.price.data
+#         # do stuff with data/insert to db
+
+#         flash(f"Added {name} at {price}")
+#         return redirect("/add")
+
+#     else:
+#         return render_template(
+#             "snack_add_form.html", form=form)
