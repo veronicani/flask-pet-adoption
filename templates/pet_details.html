@@ -1,10 +1,14 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
-<h1> {{ pet.name }}</h1>
+
+{% for msg in get_flashed_messages() %}
+  <p>{{ msg }}</p>
+{% endfor %}
+
+<h1>{{ pet.name }}</h1>
 <div>
-  <img src="{{ pet.photo_url }}" alt="Photo of {{ pet.name }}">
+  <img src="{{ pet.photo_url }}" style="height:100px" alt="Photo of {{ pet.name }}">
   <ul>
     <li>Age: {{ pet.age }} </li>
     <li>Species: {{ pet.species }}</li>
@@ -17,14 +21,14 @@
   {% for field in form
   if field.widget.input_type != 'hidden' %}
 
-  <p>
+  <div>
     {{ field.label }}
     {{ field }}
 
     {% for error in field.errors %}
     {{ error }}
     {% endfor %}
-  </p>
+  </div>
 
   {% endfor %}
 
