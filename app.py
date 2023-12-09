@@ -16,7 +16,7 @@ app.config['SECRET_KEY'] = 'i-have-a-secret'
 # Having the Debug Toolbar show redirects explicitly is often useful;
 # however, if you want to turn it off, you can uncomment this line:
 #
-# app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 connect_db(app)
 toolbar = DebugToolbarExtension(app)
@@ -27,27 +27,40 @@ print("app.config.url: ", app.config['SQLALCHEMY_DATABASE_URI'])
 def show_pets():
     """Homepage displays all pets."""
 
-    pets = Pet.query.all()
+    pets = Pet.query.order_by(Pet.name).all()
     print("pets: ", pets)
 
     return render_template('homepage.html', pets=pets)
 
 
 
-# @app.route("/add", methods=["GET", "POST"])
-# def add_snack():
-#     """Snack add form; handle adding."""
+@app.route("/add", methods=["GET", "POST"])
+def add_pet():
+    """Pet add form; handle adding."""
 
-#     form = AddSnackForm()
+    form = AddPetForm()
 
-#     if form.validate_on_submit():
-#         name = form.name.data
-#         price = form.price.data
-#         # do stuff with data/insert to db
+    if form.validate_on_submit():
+        name = form.name.data
+        species = form.species.data
+        photo_url = form.photo_url.data
+        age = form.age.data
+        notes = form.notes.data
 
-#         flash(f"Added {name} at {price}")
-#         return redirect("/add")
+        new_pet = Pet(name=name,
+                    species=species,
+                    photo_url=photo_url,
+                    age=age,
+                    notes=notes)
 
-#     else:
-#         return render_template(
-#             "snack_add_form.html", form=form)
+        db.session.add(new_pet)
+        db.session.commit()
+
+        #TODO:flash message
+
+        flash(f"Added {name}")
+        return redirect("/")
+
+    else:
+        return render_template(
+            "pet_add_form.html", form=form)
