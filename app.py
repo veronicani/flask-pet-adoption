@@ -73,7 +73,7 @@ def show_pet_details(pet_id):
     
     pet = Pet.query.get_or_404(pet_id)
 
-    form = EditPetForm()
+    form = EditPetForm(obj=pet)
     
     if form.validate_on_submit():
         # no destructuring possible?
