@@ -29,7 +29,6 @@ class Pet(db.Model):
 
     __tablename__ = "pets"
 
-
     id = db.Column(
         db.Integer,
         primary_key=True,
@@ -61,6 +60,3 @@ class Pet(db.Model):
         db.Boolean,
         nullable=False,
         default=True)
-    
-
-print("MODELS-END.PY")

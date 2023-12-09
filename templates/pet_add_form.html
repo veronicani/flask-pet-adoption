@@ -1,5 +1,7 @@
-<!-- TODO:  add html extend-->
-<h1> Add Pet Form</h1>
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Add Pet Form</h1>
 
 <form id="pet-add-form" method="POST">
   {{ form.hidden_tag() }} <!--add type=hidden form fields -->
@@ -20,3 +22,4 @@
 
   <button type="submit">Submit Pet</button>
 </form>
+{% endblock %}
