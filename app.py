@@ -1,11 +1,11 @@
 import os
 
-from flask import Flask, request, redirect, render_template, flash
+from flask import Flask, redirect, render_template, flash
 from flask_debugtoolbar import DebugToolbarExtension
 
 from models import db, connect_db, Pet
 
-from forms import AddPetForm
+from forms import AddPetForm, EditPetForm
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
@@ -64,3 +64,31 @@ def add_pet():
     else:
         return render_template(
             "pet_add_form.html", form=form)
+    
+@app.route("/<int:pet_id>", methods=["GET", "POST"])
+def show_pet_details(pet_id):
+    """Show details about the pet. 
+        Allows the user to edit the pet information.
+     """
+    
+    pet = Pet.query.get_or_404(pet_id)
+
+    form = EditPetForm()
+    
+    if form.validate_on_submit():
+        # no destructuring possible?
+        pet.photo_url = form.photo_url.data
+        pet.notes = form.notes.data
+        pet.available = form.available.data
+
+        db.session.add(pet)
+        db.session.commit()
+
+        #How to keep the notes field prepopulated on form submit success?
+
+        #TODO:flash message
+        flash(f"Edited {pet.name}")
+        return redirect(f"/{pet_id}")
+    
+    else:
+        return render_template("pet_details.html", pet=pet, form=form)
